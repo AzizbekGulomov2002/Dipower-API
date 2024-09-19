@@ -4,14 +4,17 @@ from django.forms import ValidationError
 from apps.users.models import User
 
 class TranslatableModel(models.Model):
-    name = models.CharField(max_length=255, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
-
+    name_uz = models.CharField(max_length=255, null=True, blank=True)
+    name_ru = models.CharField(max_length=255, null=True, blank=True)
+    name_en = models.CharField(max_length=255, null=True, blank=True)
+    description_uz = models.TextField(null=True, blank=True)
+    description_ru = models.TextField(null=True, blank=True)
+    description_en = models.TextField(null=True, blank=True)
     class Meta:
         abstract = True
 
     def __str__(self):
-        return self.name
+        return self.name_uz or self.name_ru or self.name_en
 
 class Category(TranslatableModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -59,27 +62,30 @@ class ProductImages(models.Model):
 # Create your models here.
 class Order(models.Model):
     class Status(models.TextChoices):
-        PENDING = 'pending', 'Pending'
-        DELIVERED = 'delivered', 'Delivered'
-        CANCELED = 'canceled', 'Canceled'
-        SUCCESS = 'success', 'Success'
+        NEW = 'new', 'New'
+        ACCEPTED = 'accepted', 'Accepted'
+        REJECTED = 'rejected', 'Rejected'
+        # PENDING = 'pending', 'Pending'
+        # DELIVERED = 'delivered', 'Delivered'
+        # CANCELED = 'canceled', 'Canceled'
+        # SUCCESS = 'success', 'Success'
 
-    class TypeOrder(models.TextChoices):
-        CASH = 'cash', 'Cash'
-        STRIPE = 'stripe', 'Stripe'
+    # class TypeOrder(models.TextChoices):
+    #     CASH = 'cash', 'Cash'
+    #     STRIPE = 'stripe', 'Stripe'
 
-    class PaymentStatus(models.TextChoices):
-        FAILED = 'failed', 'Failed'
-        CANCELED = 'canceled', 'Canceled'
-        SUCCEEDED = 'succeeded', 'Succeeded'
-        EXPIRED = 'expired', 'Expired'
-        PENDING = 'pending', 'Pending'
+    # class PaymentStatus(models.TextChoices):
+    #     FAILED = 'failed', 'Failed'
+    #     CANCELED = 'canceled', 'Canceled'
+    #     SUCCEEDED = 'succeeded', 'Succeeded'
+    #     EXPIRED = 'expired', 'Expired'
+    #     PENDING = 'pending', 'Pending'
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, related_name='orders', on_delete=models.CASCADE)
-    type_order = models.CharField(max_length=20, choices=TypeOrder.choices, default=TypeOrder.STRIPE)
-    order_status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
-    payment_status = models.CharField(max_length=20, choices=PaymentStatus.choices, default=PaymentStatus.PENDING)
+    # type_order = models.CharField(max_length=20, choices=TypeOrder.choices, default=TypeOrder.STRIPE)
+    order_status = models.CharField(max_length=20, choices=Status.choices, default=Status.NEW)
+    # payment_status = models.CharField(max_length=20, choices=PaymentStatus.choices, default=PaymentStatus.PENDING)
     address = models.CharField(max_length=255, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
@@ -98,13 +104,13 @@ class Order(models.Model):
     def total_sum(self):
         return sum(item.price * item.quantity for item in self.skus.all())
 
-    def save(self, *args, **kwargs):
-        latest_order = Order.objects.last()
-        if latest_order and latest_order.total_sum >= self.free_delivery:
-            self.free_delivery = self.delivery_price + self.free_delivery
-        else:
-            self.free_delivery = 0
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     latest_order = Order.objects.last()
+    #     if latest_order and latest_order.total_sum >= self.free_delivery:
+    #         self.free_delivery = self.delivery_price + self.free_delivery
+    #     else:
+    #         self.free_delivery = 0
+    #     super().save(*args, **kwargs)
 
 
 class OrderItem(models.Model):

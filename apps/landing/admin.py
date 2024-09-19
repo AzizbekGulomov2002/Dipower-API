@@ -3,8 +3,7 @@ from .models import AboutUs, Statistics, CallToUs, Team, NewArrival
 
 @admin.register(AboutUs)
 class AboutUsAdmin(admin.ModelAdmin):
-    list_display = ['title', 'image']
-    search_fields = ['title']
+    list_display = ['title_uz', 'title_ru', 'title_en', 'image']
     
 @admin.register(Statistics)
 class StatisticsAdmin(admin.ModelAdmin):
@@ -22,5 +21,5 @@ class TeamAdmin(admin.ModelAdmin):
 
 @admin.register(NewArrival)
 class NewArrivalAdmin(admin.ModelAdmin):
-    list_display = ['title', 'image']
-    search_fields = ['title']
+    list_display = ['title_uz', 'title_ru', 'title_en', 'image']
+    search_fields = ['title_uz', 'title_ru', 'title_en',]

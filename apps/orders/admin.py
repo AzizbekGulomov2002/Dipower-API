@@ -3,13 +3,13 @@ from apps.orders.models import Category, Product, SKU, ProductImages, Order, Ord
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'image')
-    search_fields = ('name',)
+    list_display = ('name_uz','name_en','name_ru', 'image')
+    search_fields = ('name_uz','name_en','name_ru',)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'show_main_page')
-    search_fields = ('name', 'category__name')
+    list_display = ('name_uz','name_en','name_ru', 'category', 'show_main_page')
+    search_fields = ('name_uz','name_en','name_ru')
     list_filter = ('category', 'show_main_page')
 
 @admin.register(SKU)
@@ -20,13 +20,10 @@ class SKUAdmin(admin.ModelAdmin):
 @admin.register(ProductImages)
 class ProductImagesAdmin(admin.ModelAdmin):
     list_display = ('product', 'image')
-    search_fields = ('product__name',)
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'type_order', 'order_status', 'payment_status', 'created_at')
-    search_fields = ('user__username', 'type_order')
-    list_filter = ('order_status', 'payment_status')
+    list_display = ('user','order_status','created_at')
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):

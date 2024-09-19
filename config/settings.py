@@ -18,10 +18,7 @@ ALLOWED_HOSTS = ["*"]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-AUTHENTICATION_BACKENDS = [
-    'apps.users.views.CustomAuthenticationBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
+
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "https://api.dipower.ae",
@@ -117,6 +114,11 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 10,
 
 }
+
+AUTHENTICATION_BACKENDS = [
+    'apps.users.backends.CustomAuthenticationBackend',  # Correct path
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 JAZZMIN_SETTINGS = {

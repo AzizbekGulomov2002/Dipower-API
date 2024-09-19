@@ -4,7 +4,7 @@ from .models import Category, Product, SKU, ProductImages, Order, OrderItem, Ord
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description', 'image']
+        fields = ['id', 'name_uz','name_en','name_ru','description_uz','description_ru','description_ru', 'image']
 
 class ProductImagesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +17,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'category', 'show_main_page', 'product_images', 'skus']
+        fields = ['id', 'name_uz','name_en','name_ru','description_uz','description_ru','description_en', 'category', 'show_main_page', 'product_images', 'skus']
 
     def get_skus(self, obj):
         request = self.context.get('request')
@@ -47,7 +47,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'type_order', 'order_status', 'payment_status', 'address', 'latitude', 'longitude',
+        fields = ['id', 'user', 'order_status', 'address', 'latitude', 'longitude',
                   'comment', 'created_at', 'order_items']
 
 class OrderHistorySerializer(serializers.ModelSerializer):
